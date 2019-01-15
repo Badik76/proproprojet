@@ -1,0 +1,109 @@
+body {
+    font-family: 'Thasadith', sans-serif;
+    background-color: #fcfcfc;
+}
+.row {
+    margin: 0px;
+}
+.rem10 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+legend {
+    font-size: 1.64rem;
+    line-height: 110%;
+    margin: 1.0933333333rem 0 .656rem 0;
+    color : #4db6ac;
+}
+
+.center {
+    text-align: center;
+}
+
+h2 {
+    color : #4db6ac
+}
+
+.backgroundcolor {
+    background-color: #4db6ac;
+}
+
+.responsive-img-products {
+    max-width: auto;
+    height:300px;
+}
+
+nav .brand-logo {
+    padding-left: 20px;
+}
+
+.modal {
+    max-height: 525px;
+}
+
+div#modal.modal.open {
+    height: 500px;
+}
+
+.container-view {
+    display: block;
+}
+.carousel-top {
+    display: block;
+}
+/* carousel */
+.carousel {
+    box-shadow: 2px 1px 5px 1px black;
+    height: 90vh;
+}
+.carousel img {
+    z-index: 0;
+    opacity: 0.9;
+    width: auto;
+}
+.carousel.carousel-slider.carousel-item {
+    max-height: 700px;
+    vertical-align: center;
+}
+
+.carousel-fixed-item.center {
+    margin-bottom: 80px;
+}
+#slide2 h2 {
+    margin-bottom: 60px;
+}
+
+.carousel h2 {
+    color: #0b6e4f;
+    text-shadow: 1px 1px 1px black;
+}
+
+.carousel.carousel-slider .carousel-item h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 40px;
+}
+
+.carousel p {
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+.carousel.carousel-slider .carousel-item p {
+    font-size: 1.2rem;
+}
+
+.btn.waves-effect {
+    box-shadow: 1px 1px 1px #0ce7fe;
+}
+
+/* end carousel */
+
+.none {
+    display: none;
+}
+
+label {
+    color : black;
+    font-size: 1.1rem;
+}

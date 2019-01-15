@@ -132,6 +132,9 @@ include('views/CalendarReservation.php');
     </div>
 </div>
 <!-- end avis -->
+
+<a href="register.php">REGISTER</a>
+
 <?php
 require 'views/footer.php';
 ?> 
