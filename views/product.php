@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-require 'views/header.php';
+require 'header.php';
 ?>
 <div id="products" class="container-fluid center">
     <div class="row">
@@ -13,5 +13,5 @@ require 'views/header.php';
     </div>
 </div>
 <?php
-require 'views/footer.php';
+require 'footer.php';
 ?> 

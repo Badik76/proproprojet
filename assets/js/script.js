@@ -1,34 +1,33 @@
 //try password
-var password = $("password"),
-        confirm_password = $("confirm_password");
-
-function validatePassword() {
-    if (password.value != confirm_password.value) {
-        confirm_password.setCustomValidity("Mots de Passes incorrects");
-    } else {
-        confirm_password.setCustomValidity('');
-    }
-}
-
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
+//function validatePassword() {
+//    if (password.value != confirm_password.value) {
+//        confirm_password.setCustomValidity("Mots de Passes incorrects");
+//    } else {
+//        confirm_password.setCustomValidity('');
+//    }
+//}
+//
+//password.onchange = validatePassword;
+//confirm_password.onkeyup = validatePassword;
 //fin try password
+
 
 // carou
 $('.carousel.carousel-slider').carousel({
     fullWidth: true,
     indicators: true,
-    next: 5
+    next: 7
 });
     setInterval (function() {
       $('.carousel').carousel('next');
-    }, 5000);
+    }, 7000);
 // end carou
 
 $('.collapsible').collapsible();
 $('.modal').modal();
 $('.sidenav').sidenav();
 $(".dropdown-trigger").dropdown();
+$('.tap-target').tapTarget();
 
 
 //angular config

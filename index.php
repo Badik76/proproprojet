@@ -49,11 +49,13 @@ include('controllers/ControllerFormInscription.php');
             <div class="card">
                 <div class="card-image">
                     <img src="./assets/img/card1.jpeg">
-                    <span class="card-title">Prestations 1</span>
+                    <span class="card-title">Soin Reïki</span>
                     <a class="btn-floating halfway-fab waves-effect waves-light backgroundcolor modal-trigger" href="#modal"><i class="material-icons">add</i></a>
                 </div>
                 <div class="card-content">
-                    <p>descriptif prestation 1</p>
+                    <p>Méthode japonaise qui permet de réduire le stress, soulager la douleur, de rééquilibreer les énergies du corps, apaise l'esprit...<br />
+                        Le procédé se déroule alongé sur une table, habillé.
+                        Echange d'énergie par apposition des mains entre donneur et receveur.</p>
                 </div>
             </div>
         </div>
@@ -61,11 +63,12 @@ include('controllers/ControllerFormInscription.php');
             <div class="card">
                 <div class="card-image">
                     <img src="./assets/img/card2.jpeg">
-                    <span class="card-title">Prestations 2</span>
+                    <span class="card-title">Soin Cristaux</span>
                     <a class="btn-floating halfway-fab waves-effect waves-light backgroundcolor modal-trigger" href="#modal"><i class="material-icons">add</i></a>
                 </div>
                 <div class="card-content">
-                    <p>descriptif prestation 2</p>
+                    <p>Soins Reïki combiner avec de la lithothérapie.
+                        Ajout de pierres énergétiques au soin reïki traditionnel ce qui augmente l'efficacité du soin.</p>
                 </div>
             </div>
         </div>
@@ -73,11 +76,11 @@ include('controllers/ControllerFormInscription.php');
             <div class="card">
                 <div class="card-image">
                     <img src="./assets/img/card3.jpeg">
-                    <span class="card-title">Prestations 3</span>
+                    <span class="card-title">Massage Californien</span>
                     <a class="btn-floating halfway-fab waves-effect waves-light backgroundcolor modal-trigger" href="#modal"><i class="material-icons">add</i></a>
                 </div>
                 <div class="card-content">
-                    <p>descriptif prestation 3</p>
+                    <p>Soon</p>
                 </div>
             </div>
         </div>
@@ -90,7 +93,7 @@ include('views/CalendarReservation.php');
 
 <!-- créer en dessus card avec les coms laissés -->
 <div id="endCom" class="row">
-      <h2 class="center">Vos Avis</h2>
+    <h2 class="center">Vos Avis</h2>
     <div class="col s12 m4 l4">
         <div class="card horizontal">
             <div class="card-stacked">

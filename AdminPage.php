@@ -121,19 +121,28 @@ require 'views/header.php';
         <li> FOREACH
             <div class="collapsible-header">
                 <i class="material-icons">filter_drama</i>
-                First
-                <span class="new badge">4</span></div>
-            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+                Prestations.Prestaname
+                <span class="new badge">if Resa.id +1 = count!= Resa.id.length echo Resa</span></div>
+            <div class="collapsible-body"><p>Users.name users.firstname users.phone dateRDV.dateRDV TimeRDV.time.RDV</p>
+                <button class="btn red darken-1" type="submit" name="action">Annuler
+                    <i class="material-icons right">cancel</i>
+                </button>
+                <button class="btn" type="submit" name="action">Valider
+                    <i class="material-icons right">done</i>
+                </button>
+            </div>
         </li>
         <li>
             <div class="collapsible-header">
                 <i class="material-icons">place</i>
-                Second
+                Prestations.Prestaname
                 <span class="badge">1</span></div>
             <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
         </li>
         <li>
-            <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+            <div class="collapsible-header"><i class="material-icons">whatshot</i>
+                Prestations.Prestaname
+            </div>
             <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
         </li>
     </ul>
@@ -170,12 +179,12 @@ require 'views/header.php';
                         <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                 </ul>
-                <button class="btn" type="submit" name="action">Upgrade
-                        <i class="material-icons right">autorenew</i>
-                    </button>
                 <button class="btn red darken-1" type="submit" name="action">Delete
-                        <i class="material-icons right">cancel</i>
-                    </button>
+                    <i class="material-icons right">cancel</i>
+                </button>
+                <button class="btn" type="submit" name="action">Upgrade
+                    <i class="material-icons right">autorenew</i>
+                </button>
             </fieldset>
         </form>
     </div>
@@ -232,6 +241,8 @@ require 'views/header.php';
             <tr>
                 <th>Nom</th>
                 <th>Prénom</th>
+                <th>Anniversaire</th>
+                <th>Adresse</th>
                 <th>Email</th>
                 <th>Téléphone</th>
                 <th>Modif</th>
@@ -243,10 +254,16 @@ require 'views/header.php';
             <tr>
                 <td>users.name</td>
                 <td>users.firstname</td>
+                <td>users.birthday</td>
+                <td>users.adress</td>
                 <td>users.email</td>
                 <td>users.phone</td>
-                <td><button class="btn red darken-1" type="submit" name="action">Delete
+                <td>
+                    <button class="btn red darken-1" type="submit" name="action">Delete
                         <i class="large material-icons right">cancel</i>
+                    </button>
+                    <button class="btn" type="submit" name="action">SuperUser
+                        <i class="large material-icons right">grade</i>
                     </button>
                 </td>
             </tr>

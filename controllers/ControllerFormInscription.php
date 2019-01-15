@@ -4,7 +4,7 @@ $errorArray = []; // créa tableau pour error
 $regexlastname = "/^[a-zA-ZÄ-ÿ\- ]+$/"; //regex
 $regexfirstname = "/^[a-zA-ZÄ-ÿ\- ]+$/";
 $regexemail = "/^[a-z0-9.-]+@[a-z0-9.-]+\.[a-z]{2,6}$/";
-$regexphone = "^((\+)33|0)[1-9](\d{2}){4}$";
+$regexphone = "/^((\+)33|0)[1-9](\d{2}){4}$/";
 $regexpassword = "/^.{6,}+$/";
 
 

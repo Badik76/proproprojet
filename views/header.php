@@ -23,9 +23,9 @@
                     <div class="nav-wrapper">
                         <a href="index.php" class="brand-logo"><i class="fas fa-home"></i></a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
-                            <li><a href="product.php">Produits</a></li>
+                            <li><a href="./views/product.php">Produits</a></li>
                             <li><a href="userPage.php">Mes RDVs</a></li>
-                            <li><a href="AdminPage.php">Panel Admin</a></li>
+                            <li><a href="AdminPage.php">Panel Admin</a></li>                            
                             <!-- Dropdown Trigger -->
                             <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Espace Client<i class="material-icons right">arrow_drop_down</i></a></li>
                             <!-- Dropdown Structure -->

@@ -29,11 +29,11 @@ require 'views/header.php';
                 </table>
             </div>
             <div class="card-action">
-                <button class="btn" type="submit" name="action">Upgrade
-                    <i class="material-icons right">autorenew</i>
-                </button>
                 <button class="btn red darken-1" type="submit" name="action">Delete
                     <i class="material-icons right">cancel</i>
+                </button>
+                <button class="btn" type="submit" name="action">Upgrade
+                    <i class="material-icons right">autorenew</i>
                 </button>
             </div>
         </div>
@@ -60,6 +60,7 @@ require 'views/header.php';
     </div>
     <div class="card col m12 l6"> 
         <div class="card-title groundcolor"><h2><i class="material-icons">group</i> Mon Profil <i class="material-icons">group</i></h2></div>
+        <p>TypeUsers.name if superusers = icon grade</p>
         <div class="card-content">
             <form id="inscription" method="post" action="userPage.php">
                 <fieldset>
@@ -96,11 +97,11 @@ require 'views/header.php';
             </form>
         </div>
         <div class="card-action">
-            <button class="btn" type="submit" name="actionup">Upgrade
-                <i class="material-icons right">autorenew</i>
-            </button>
             <button class="btn red darken-1" type="submit" name="actiondel">Delete
                 <i class="material-icons right">cancel</i>
+            </button>
+            <button class="btn" type="submit" name="actionup">Upgrade
+                <i class="material-icons right">autorenew</i>
             </button>
             <p class="badge red-text text-darken-1">Cette action est irreversible.</p>
         </div>
