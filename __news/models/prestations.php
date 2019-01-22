@@ -11,6 +11,7 @@ class prestations extends database {
     public $id;
     public $prestaname;
     public $descirption;
+    public $image;
 
     // on crée une methode magique __construct()
     public function __construct() {
@@ -25,11 +26,12 @@ class prestations extends database {
     public function addPrestation() {
         // Insertion des données du patient à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
-        $query = 'INSERT INTO `Prestations` (`Prestaname`, `description`) VALUES (:prestaname, :description)';
+        $query = 'INSERT INTO `Prestations` (`Prestaname`, `description`, `image`) VALUES (:prestaname, :description, :image)';
         $addPrestation = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $addPrestation->bindValue(':prestaname', $this->prestaname, PDO::PARAM_STR);
         $addPrestation->bindValue(':description', $this->description, PDO::PARAM_STR);
+        $addPrestation->bindValue(':image', $this->description, PDO::PARAM_STR);
         // on utilise la méthode execute() via un return
         return $addPrestation->execute();
     }
@@ -40,7 +42,7 @@ class prestations extends database {
      */
     public function getPrestationsList() {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table prestations
-        $query = 'SELECT `id`, `Prestaname`, `description` FROM `Prestations` ORDER BY `id`';
+        $query = 'SELECT `id`, `Prestaname`, `description`, `image` FROM `Prestations` ORDER BY `id`';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
         $result = $this->dataBase->query($query);
         // On crée un objet $resultList qui est un tableau.
@@ -82,11 +84,12 @@ class prestations extends database {
     public function updatePrestationById() {
         // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
-        $query = 'UPDATE `Prestations` SET `Prestaname` = :prestaname, `description` = :description WHERE `id` = :idPresta';
+        $query = 'UPDATE `Prestations` SET `Prestaname` = :prestaname, `description` = :description, `image` = :image WHERE `id` = :idPresta';
         $updatePresta = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $updatePresta->bindValue(':prestaname', $this->prestaname, PDO::PARAM_STR);
         $updatePresta->bindValue(':description', $this->description, PDO::PARAM_STR);
+        $updatePresta->bindValue(':image', $this->image, PDO::PARAM_STR);
         // on utilise la méthode execute() via un return
         return $updatePresta->execute();
     }

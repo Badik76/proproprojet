@@ -26,19 +26,17 @@ class daterdv extends database {
      * @return type EXECUTE
      */
     
-    public function addDaterdv() {
+    public function addRDV() {
         // Insertion des données du patient à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
-        $query = 'INSERT INTO `USERS` (`lastname`, `firstname`, `phone`, `mail`, `birthdate`) VALUES (:lastname, :firstname, :phone, :mail, :birthdate)';
-        $addUser = $this->dataBase->prepare($query);
+        $query = 'INSERT INTO `USERS` (`dateRDV`, `id_USERS`, `id_Prestations`, `id_TimeRDV`, `id_RESA`) VALUES (:dateRDV, :id_USERS, :id_Prestations, :id_TimeRDV, :id_RESA)';
+        $addRDV = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
-        $addUser->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
-        $addUser->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
-        $addUser->bindValue(':phone', $this->phone, PDO::PARAM_STR);
-        $addUser->bindValue(':mail', $this->mail, PDO::PARAM_STR);
-        $date = DateTime::createFromFormat('d/m/Y', $this->birthdate);
-        $dateUs = $date->format('Y-m-d');
-        $addUser->bindValue(':birthdate', $dateUs, PDO::PARAM_STR);
+        $addRDV->bindValue(':dateRDV', $this->dateRDV, PDO::PARAM_STR);
+        $addRDV->bindValue(':id_USERS', $this->id_USERS, PDO::PARAM_INT);
+        $addRDV->bindValue(':id_Prestations', $this->id_Prestations, PDO::PARAM_INT);
+        $addRDV->bindValue(':id_TimeRDV', $this->mail, PDO::PARAM_INT);
+        $addRDV->bindValue(':id_RESA', $this->mail, PDO::PARAM_BOOL);
         // on utilise la méthode execute() via un return
         return $addUser->execute();
     }

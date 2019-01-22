@@ -52,7 +52,7 @@ class users extends database {
      */
     public function getUsersList() {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users
-        $query = 'SELECT `id`, `lastname`, `firstname`, `phone`, `email` FROM `USERS` ORDER BY `lastname`';
+        $query = 'SELECT `id`, `lastname`, `firstname`, `phone`, `email`, `id_TypeUsers` FROM `USERS` ORDER BY `lastname`';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
         $result = $this->dataBase->query($query);
         // On crée un objet $resultList qui est un tableau.
@@ -69,7 +69,7 @@ class users extends database {
     public function getUsersById() {
         $isCorrect = false;
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users l'id est egal à :id via marqueur nominatif sur id
-        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate`, `phone`, `email` FROM `USERS` WHERE `id` = :idUser';
+        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate`, `phone`, `email`, `adress`, `id_TypeUsers` FROM `USERS` WHERE `id` = :idUser';
         // On crée un objet $findProfil qui utilise la fonction prepare avec comme paramètre $query        
         $findProfil = $this->dataBase->prepare($query);
         // on attribue la valeur via bindValue et on recupère les attributs de la classe via $this
@@ -84,6 +84,8 @@ class users extends database {
                 $this->birthdate = $profil->birthdate;
                 $this->phone = $profil->phone;
                 $this->email = $profil->email;
+                $this->adress = $profil->adress;
+                $this->id_TypeUsers = $profil->id_TypeUsers;
                 $isCorrect = true;
             }
         }
@@ -97,16 +99,17 @@ class users extends database {
     public function updateUserById() {
         // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
-        $query = 'UPDATE `USERS` SET `lastname` = :lastname, `firstname` = :firstname, `birthdate` = :birthdate, `phone` = :phone, `email` = :email, `adress` = :adress WHERE `id` = :idUser';
+        $query = 'UPDATE `USERS` SET `lastname` = :lastname, `firstname` = :firstname, `phone` = :phone, `email` = :email, `birthdate` = :birthdate, `adress` = :adress WHERE `id` = :idUser';
         $updateUser = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $updateUser->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
         $updateUser->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $updateUser->bindValue(':phone', $this->phone, PDO::PARAM_STR);
+        $updateUser->bindValue(':email', $this->email, PDO::PARAM_STR);
         $date = DateTime::createFromFormat('d/m/Y', $this->birthdate);
         $dateUs = $date->format('Y-m-d');
         $updateUser->bindValue(':birthdate', $dateUs, PDO::PARAM_STR);
-        $updateUser->bindValue(':phone', $this->phone, PDO::PARAM_STR);
-        $updateUser->bindValue(':mail', $this->email, PDO::PARAM_STR);
+        $updateUser->bindValue(':adress', $this->adress, PDO::PARAM_STR);
         $updateUser->bindValue(':idUser', $this->id, PDO::PARAM_INT);
         // on utilise la méthode execute() via un return
         return $updateUser->execute();
@@ -117,19 +120,11 @@ class users extends database {
      * Contrôle de la QUERY via un commit et rollback
      * @return EXECUTE QUERY
      */
-    public function deleteUserAndAppointments() {
+    public function deleteUser() {
         // on met en place les attributs du PDO $dataBase avec ATTR_ERRMODE et ERRMODE_EXCEPTION pour genérer des message en cas d'erreur
         $this->dataBase->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try {
-            // On démarre notre transaction sur notre PDO dataBase
             $this->dataBase->beginTransaction();
-            // On crée notre requête pour effacer les rendez-vous
-            $deleteAppointmentsQuery = 'DELETE FROM `DateRDV` WHERE `idUser` = :idUser';
-            // on prépare la requete avec un marqueur nominatif qui récuperera la valeur de l'idUser  
-            $deleteAppointments = $this->dataBase->prepare($deleteAppointmentsQuery);
-            $deleteAppointments->bindValue(':idUser', $this->id, PDO::PARAM_INT);
-            // on execute la requete pour effacer le ou les rendez-vous
-            $deleteAppointments->execute();
             // On crée notre requête pour effacer le user
             $deleteUserQuery = 'DELETE FROM `USERS` WHERE `id` = :id';
             // on prépare la requete avec un marqueur nominatif qui récuperera la valeur de l'id  
@@ -153,7 +148,7 @@ class users extends database {
     public function findUsersBySearch($search) {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users
         // On utilise un LIKE qui nous permettra d'afficher la liste selon un critère non précis
-        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate`, `phone`, `email` FROM `patients` WHERE `lastname` LIKE :search ORDER BY `lastname`';
+        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate`, `phone`, `adress`, `email`, `id_TypeUsers` FROM `USERS` WHERE `lastname` LIKE :search ORDER BY `lastname`';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
         $result = $this->dataBase->prepare($query);
         // nous attribuons au marqueur nominatif search la valeur de $search
@@ -174,7 +169,7 @@ class users extends database {
     public function GetSomeUsers($start, $limit) {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users
         // On utilise LIMIT et OFFSET qui nous permettra d'afficher la liste via une pagination
-        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate` FROM `USERS` ORDER BY `lastname` LIMIT :limit OFFSET :start';
+        $query = 'SELECT `id`, `lastname`, `firstname`, DATE_FORMAT(`birthdate`, "%d/%m/%Y") AS `birthdate`, `phone`, `adress`, `email`, `id_TypeUsers` FROM `USERS` ORDER BY `lastname` LIMIT :limit OFFSET :start';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
         $result = $this->dataBase->prepare($query);
         // nous attribuons au marqueur nominatif limit et start leurs valeurs respectifs via les paramètres de fonction
@@ -194,10 +189,32 @@ class users extends database {
      */
     public function GetNumberTotalRows() {
         // on crée un requête pour calculer le nombre total de ligne de la table users
-        $query = 'SELECT COUNT(`id`) AS `totalRows` FROM `patients`';
+        $query = 'SELECT COUNT(`id`) AS `totalRows` FROM `USERS`';
         $totalRows = $this->dataBase->query($query);
         $result = $totalRows->fetch(PDO::FETCH_OBJ);
         return $result;
+    }
+
+    public function putUserSuperUser() {
+        // Insertion des données du patient à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
+        // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
+        $query = 'UPDATE `USERS` SET `id_TypeUsers` = 2 WHERE `id`=:id';
+        $putUserSuperUser = $this->dataBase->prepare($query);
+        // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
+        $putUserSuperUser->bindValue(':id', $this->id, PDO::PARAM_INT);
+        // on utilise la méthode execute() via un return
+        return $putUserSuperUser->execute();
+    }
+
+    public function delSuperUser() {
+        // Insertion des données du patient à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
+        // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
+        $query = 'UPDATE `USERS` SET `id_TypeUsers` = 3 WHERE `id`=:id';
+        $putUserSuperUser = $this->dataBase->prepare($query);
+        // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
+        $putUserSuperUser->bindValue(':id', $this->id, PDO::PARAM_INT);
+        // on utilise la méthode execute() via un return
+        return $putUserSuperUser->execute();
     }
 
     public function __destruct() {

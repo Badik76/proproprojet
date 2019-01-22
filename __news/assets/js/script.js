@@ -1,3 +1,14 @@
+//déclaration des instances de Materialize
+$('select').formSelect();
+$('.collapsible').collapsible();
+$('.modal').modal();
+$('.sidenav').sidenav();
+$(".dropdown-trigger").dropdown();
+
+$( '.collUser' ).click(function() {
+ $openCollapsible = true;
+});
+
 // carou
 $('.carousel.carousel-slider').carousel({
     fullWidth: true,
@@ -8,13 +19,6 @@ setInterval(function () {
     $('.carousel').carousel('next');
 }, 7000);
 // end carou
-
-$('.collapsible').collapsible();
-$('.modal').modal();
-$('.sidenav').sidenav();
-$(".dropdown-trigger").dropdown();
-
-
 
 // Liste des catégories
 var categories = [

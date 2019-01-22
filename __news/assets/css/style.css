@@ -107,3 +107,7 @@ label {
     color : black;
     font-size: 1.1rem;
 }
+
+.card .card-title{
+    font-size: 35px;
+}

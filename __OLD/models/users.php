@@ -16,7 +16,6 @@ class users extends database {
     public $password;
     public $adress;
     public $birthdate;
-    public $id_TypeUsers;
 
     // on crée une methode magique __construct()
     public function __construct() {

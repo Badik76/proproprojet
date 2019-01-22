@@ -21,7 +21,7 @@ require_once '../controllers/registerController.php';
         <!--Let browser know website is optimized for mobile-->
     </head>
     <body>
-<!--navbar-->
+        <!--navbar-->
         <header>
             <div class="navbar-fixed">
                 <nav class="backgroundcolor">
@@ -49,13 +49,8 @@ require_once '../controllers/registerController.php';
             <div id="AddUser" class="card-panel">
                 <?php if ($addSuccess) { ?>
                     <h2> Patient enregistré ! </h2>
-                <?php } else { ?>                       
-                    <!--<div class="row">
-                        <div class="input-field col s12 l8 offset-l2">
-                            input id="birthdate" name="birthdate" type="text" class="validate datepicker" />
-                            <label for="birthdate">Date de naissance (ex: 23/05/2000). <span class="error"><?= isset($errorArray['birthdate']) ? $errorArray['birthdate'] : '' ?></span></label>
-                        </div>
-                        </div>-->                                   
+                    <a href="../index.php">Retour</a>
+                <?php } else { ?>                             
                     <!-- form inscription-->
                     <form id="addUser" action="register.php" method="POST">
                         <fieldset>
@@ -112,6 +107,7 @@ require_once '../controllers/registerController.php';
                     </form>
                 <?php } ?>
             </div>  
+        </div>
             <!-- fin formulaire inscription-->
 
             <div class="container-fluid rem10">

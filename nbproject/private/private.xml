@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/projet-pro/index2.php</file>
-            <file>file:/var/www/html/projet-pro/models/users.php</file>
-            <file>file:/var/www/html/projet-pro/views/FormLogConnexion.php</file>
-            <file>file:/var/www/html/projet-pro/index.php</file>
-            <file>file:/var/www/html/projet-pro/models/resa.php</file>
-            <file>file:/var/www/html/projet-pro/models/database.php</file>
-            <file>file:/var/www/html/projet-pro/views/FormLogInscription.php</file>
+            <file>file:/var/www/html/projet-pro/__news/controllers/userPageController.php</file>
+            <file>file:/var/www/html/projet-pro/__news/views/userPage.php</file>
+            <file>file:/var/www/html/projet-pro/__news/models/users.php</file>
         </group>
     </open-files>
 </project-private>
