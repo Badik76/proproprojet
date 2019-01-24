@@ -5,6 +5,7 @@ require_once '../models/users.php';
 require_once '../models/prestations.php';
 require_once '../models/timerdv.php';
 require_once '../models/productcategory.php';
+require_once '../models/products.php';
 
 // On instancie un nouvel $users objet comme classe users
 $users = new users();
@@ -14,6 +15,8 @@ $prestations = new prestations();
 $timerdv = new timerdv();
 // On instancie un nouvel $productcategory objet comme classe productcategory
 $productcategory = new productcategory();
+// On instancie un nouvel $productcategory objet comme classe productcategory
+$products = new products();
 
 // On appel la methode getAppointmentsList dans l'objet $listAppointments
 $listPrestations = $prestations->getPrestationsList();
@@ -21,11 +24,15 @@ $listPrestations = $prestations->getPrestationsList();
 $showTimeRDV = $timerdv->ShowTimeRDV();
 // On appel la methode showCatProd dans l'objet $showCatProd
 $showCatProd = $productcategory->showCatProd();
+// On appel la methode showProduct dans l'objet $showProd
+$showProd = $products->showProduct();
+
 
 
 //déclaration des regexs   
-$regexName = '/^[a-zA-Zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ-]+$/';
-
+$regexName = '/^[A-z\'\- 0-9]{1,}$/';
+$regexImage = '/[^\s]+(\.(?i)(jpg|png|gif|bmp|jpeg))$/';
+$regexDescri = '/^[A-z\'\- 0-9]{1,}$/';
 // créa tableau pour error
 $errorArray = [];
 
@@ -35,7 +42,12 @@ $superUserDEL = false;
 //Initialise $productcategoryDEL, $addCatSuccess et $upCatSuccess en False pour afficher l'ajout, la modification et la suppression d'une category de produit
 $addCatSuccess = false;
 $productcategoryDEL = false;
-$upCatSuccess  = false;
+$upCatSuccess = false;
+//Initialise $productDEL, $addProdSuccess et $upProdSuccess en False pour afficher l'ajout, la modification et la suppression d'un produit
+$productDEL = false;
+$addProdSuccess = false;
+$upProdSuccess = false;
+
 /**
  * On créer $$openCollapsible en False pour Afficher le collpase au moment du clic sur Pagination
  */
@@ -45,7 +57,7 @@ $openCollapsible = false;
  */
 $noMatch = false;
 /* on crée un variable $deleteOk qu'on initialise à false
- * cette variable va nous permettre d'afficher un message lors de la suppression d'un patient
+ * cette variable va nous permettre d'afficher un message lors de la suppression d'un user
  */
 $deleteOk = false;
 
@@ -101,7 +113,6 @@ if (!empty($_GET['DelSuperUser'])) {
     $superUserDEL = true;
 }
 
-
 //On test la valeur idTimeRDV l'array $_POST pour savoir si elle existe
 //Si nous attribuons à idTimeRDV la valeur du $_POST
 if (isset($_POST['idTimeRDV'])) {
@@ -114,6 +125,7 @@ if (isset($_POST['idTimeRDV'])) {
 } else if (isset($_POST['addButton']) && !array_key_exists('idTimeRDV', $_POST)) {
     $errorArray['idTimeRDV'] = '*Veuillez sélectionner une heure';
 }
+
 //CatégoryProduct
 //ADD - On test la valeur name dans l'array $_POST, si elle existe via premier if
 if (isset($_POST['name'])) {
@@ -138,16 +150,6 @@ if (count($errorArray) == 0 && isset($_POST['addCatProd'])) {
         $addCatSuccess = true;
     }
 }
-
-//on vérifie que nous avons crée une entrée submit dans l'array $_POST, si présent on éxécute la méthide updateUserById()
-
-if (count($errorArray) == 0 && isset($_POST['updateCatButton'])) {
-    if (!$productcategory->updateCatProdById()) {
-        $errorArray['update'] = 'La mise à jour à échoué';
-    } else {
-        $upCatSuccess = true;
-    }
-}
 /* on test que $_GET['DeleteCatProd'] n'est pas vide
  * si non vide, on attribue à $productcategory id la valeur du get avec un htmlspecialchars pour la protection
  * et on applique la methode deleteCatProd pour del la productcategory
@@ -158,4 +160,133 @@ if (!empty($_GET['DeleteCatProd'])) {
     $productcategoryDEL = true;
 }
 
+//on vérifie que nous avons crée une entrée submit dans l'array $_POST, si présent on éxécute la méthide updateUserById()
+//Update
+if (isset($_POST['update'])) {
+    // Variable lastname qui vérifie que les caractères speciaux soit converties en entité html via htmlspecialchars = protection
+    $productcategory->name = htmlspecialchars($_POST['update']);
+    // On test que la variable n'est pas égale à la regeX
+    if (!preg_match($regexName, $productcategory->name)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['update'] = 'Votre nom ne doit contenir que des lettres';
+    }
+    // Si le post lastname n'est pas rempli (donc vide)
+    if (empty($productcategory->name)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['update'] = 'Champs obligatoire';
+    }
+}
+
+if (count($errorArray) == 0 && isset($_GET['idCatToUpdate']) && isset($_POST['updateCatButton'])) {
+    $productcategory->id = $_GET['idCatToUpdate'];
+    if (!$productcategory->updateCatProd()) {
+        $errorArray['update'] = 'La mise à jour à échoué';
+    } else {
+        $upCatSuccess = true;
+    }
+}
+
+//PRODUITS
+//ADD - On test la valeur name dans l'array $_POST, si elle existe via premier if
+if (isset($_POST['name'])) {
+    // Variable name qui vérifie que les caractères speciaux soit converties en entité html via htmlspecialchars = protection
+    $products->name = htmlspecialchars($_POST['name']);
+    // On test que la variable n'est pas égale à la regeX
+    if (!preg_match($regexName, $products->name)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['name'] = 'Le nom du produit nom ne doit contenir que des lettres';
+    }
+    // Si le post lastname n'est pas rempli (donc vide)
+    if (empty($products->name)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['name'] = 'Champs obligatoire';
+    }
+}
+//On test la valeur image dans l'array $_POST, si elle existe via premier if
+if (isset($_POST['image'])) {
+    // Variable image qui vérifie que les caractères speciaux soit converties en entité html via htmlspecialchars = protection
+    $products->image = htmlspecialchars($_POST['image']);
+    // On test que la variable n'est pas égale à la regeX
+    if (!preg_match($regexImage, $products->image)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['image'] = 'Votre format d\'image ne convient pas';
+    }
+    // Si le post lastname n'est pas rempli (donc vide)
+    if (empty($products->image)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['image'] = 'Champs obligatoire';
+    }
+}
+//On test la valeur description dans l'array $_POST, si elle existe via premier if
+if (isset($_POST['description'])) {
+    // Variable description qui vérifie que les caractères speciaux soit converties en entité html via htmlspecialchars = protection
+    $products->description = htmlspecialchars($_POST['description']);
+    // On test que la variable n'est pas égale à la regeX
+    if (!preg_match($regexDescri, $products->description)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['description'] = 'Votre description ne doit contenir que des lettres';
+    }
+    // Si le post lastname n'est pas rempli (donc vide)
+    if (empty($products->description)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['description'] = 'Champs obligatoire';
+    }
+}
+
+//SELECT CATEGORYPRODUIT
+//On test la valeur ProdCat l'array $_POST pour savoir si elle existe
+//Si nous attribuons à ProdCat la valeur du $_POST
+if (isset($_POST['id_ProductCategory'])) {
+    $products->id_ProductCategory = $_POST['id_ProductCategory'];
+    // OU si le formulaire a été validé mais que il n'y a pas d'élément sélectionné dans le menu déroulant
+    // on crée un message d'erreur pour pouvoir l'afficher
+    if (is_nan($products->id)) {
+        $errorArray['id_ProductCategory'] = '*Veuillez sélectionner uniquement une catégorie de la liste';
+    }
+} else if (isset($_POST['AddProdButt']) && !array_key_exists('id_ProductCategory', $_POST)) {
+    $errorArray['id_ProductCategory'] = '*Veuillez sélectionner une catégorie';
+}
+
+if (count($errorArray) == 0 && isset($_POST['AddProdButt'])) {
+    if (!$products->addProduct()) {
+        $errorArray['add'] = 'l\'envoie du formulaire à échoué';
+    } else {
+        $addProdSuccess = true;
+    }
+}
+
+/* on test que $_GET['DeleteProd'] n'est pas vide
+ * si non vide, on attribue à $productcategory id la valeur du get avec un htmlspecialchars pour la protection
+ * et on applique la methode deleteCatProd pour del la productcategory
+ */
+if (!empty($_GET['DeleteProd'])) {
+    $products->id = htmlspecialchars($_GET['DeleteProd']);
+    $products->deleteProd();
+    $productsDEL = true;
+}
+
+//On test la valeur ProdCat l'array $_POST pour savoir si elle existe
+//Si nous attribuons à ProdCat la valeur du $_POST
+if (isset($_POST['id_ProductCategory'])) {
+    $products->id_ProductCategory = $_POST['id_ProductCategory'];
+    // OU si le formulaire a été validé mais que il n'y a pas d'élément sélectionné dans le menu déroulant
+    // on crée un message d'erreur pour pouvoir l'afficher
+    if (is_nan($products->id)) {
+        $errorArray['id_ProductCategory'] = '*Veuillez sélectionner uniquement une catégorie de la liste';
+    }
+} else if (isset($_POST['UpProdButt']) && !array_key_exists('id_ProductCategory', $_POST)) {
+    $errorArray['id_ProductCategory'] = '*Veuillez sélectionner une catégorie';
+}
+
+/*
+ * Upgrade du produit
+ */
+if (count($errorArray) == 0 && isset($_GET['idProdToUpdate']) && isset($_POST['UpProdButt'])) {
+    $products->id = $_GET['idProdToUpdate'];
+    if ($products->updateProd()) {
+        $upProdSuccess = true;
+    } else {
+        $errorArray['add'] = 'La mise à jour à échoué';
+    }
+}
 ?>

@@ -1,13 +1,14 @@
 //déclaration des instances de Materialize
 $('select').formSelect();
 $('.collapsible').collapsible();
+// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 $('.modal').modal();
 $('.sidenav').sidenav();
 $(".dropdown-trigger").dropdown();
 
-$( '.collUser' ).click(function() {
- $openCollapsible = true;
-});
+//$( '.collUser' ).click(function() {
+// $openCollapsible = true;
+//});
 
 // carou
 $('.carousel.carousel-slider').carousel({

@@ -47,15 +47,15 @@ class productcategory extends database {
         return $showCatProd;
     }
 
-     public function updateCatProdById() {
+     public function updateCatProd() {
         // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
-        $query = 'UPDATE `ProductCategory` SET `name`=:name WHERE `id`=:id';
+        $query = 'UPDATE `ProductCategory` SET `name`=:name WHERE `id`=:idCatProd';
         $updateCatProd = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
+        $updateCatProd->bindValue(':idCatProd', $this->id, PDO::PARAM_INT);
         $updateCatProd->bindValue(':name', $this->name, PDO::PARAM_STR);
-        $updateCatProd->bindValue(':id', $this->id, PDO::PARAM_INT);
-        // on utilise la méthode execute() via un return
+                // on utilise la méthode execute() via un return
         return $updateCatProd->execute();
     }
     

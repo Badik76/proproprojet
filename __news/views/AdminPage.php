@@ -2,7 +2,7 @@
 // Start the session
 session_start();
 require_once '../controllers/AdminPageController.php';
-$_SESSION["test"] = $openCollapsible;
+$_SESSION['test'] = $openCollapsible;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -49,7 +49,7 @@ $_SESSION["test"] = $openCollapsible;
         <!--end navbar-->
         <div class="container-fluid center">
             <ul class="collapsible">
-                <li id="colUser" class="<?= $openCollapsible ? 'active' : '' ?>">
+                <li id="colUser" class="<?= $_SESSION['test'] ? 'active' : '' ?>">
                     <div class="collapsible-header">
                         <h2><i class="material-icons">group</i> Gestion des Clients <i class="material-icons">group</i></h2>
                     </div>
@@ -138,7 +138,7 @@ $_SESSION["test"] = $openCollapsible;
                                                     <select id="idTimeRDV" name="idTimeRDV">
                                                         <option value="0" disabled selected>Choix de l'heure du RDV</option>
                         <?php foreach ($showTimeRDV AS $timerdv) { ?>
-                                                                                                                                                                        <option value="<?= $timerdv->timeRDV ?>"><?= $timerdv->timeRDV ?></option>
+                                                                                                                                                                                                                                                                                                                                                                                                                <option value="<?= $timerdv->timeRDV ?>"><?= $timerdv->timeRDV ?></option>
                         <?php } ?>
                                                     </select>
                                                     <p class="error"><?= isset($errorArray['idTimeRDV']) ? $errorArray['idTimeRDV'] : '' ?></p>
@@ -146,7 +146,7 @@ $_SESSION["test"] = $openCollapsible;
                                                 <div class="input-field">
                                                     <input name="addButton" type="submit" class="waves-effect waves-light btn teal" value="Ajouter le RDV"/>
                         <?php foreach ($errorArray AS $error) { ?>
-                                                                                                                                                                    <p class="error"><?= $error ?></p>
+                                                                                                                                                                                                                                                                                                                                                                                                            <p class="error"><?= $error ?></p>
                         <?php } ?>                            
                                                 </div>
                                         </form>
@@ -180,94 +180,201 @@ $_SESSION["test"] = $openCollapsible;
                     </div>
                     <div class="collapsible-body">
                         <div class="col m12 l6">
-                            <form name="addCatProd" action="AdminPage.php" method="POST" >
-                                <fieldset>
-                                    <legend>Ajouter Catégorie</legend>
-                                    <p class="center-align"><?= $addCatSuccess ? 'La catégorie est ajoutée ' : '' ?><p>
-                                    <div>
-                                        <label for="name">Nom : </label>
-                                        <input name="name" type="text" id="name" required class="validate" value="<?= isset($_POST['name']) ? $_POST['name'] : ''; ?>" />
-                                        <div>
-                                            <span class="error"><?= isset($errorArray['name']) ? $errorArray['name'] : ''; ?></span>
-                                        </div>
-                                    </div>
-                                    <input type="submit" class="btn" name="addCatProd" />
-                                    <input name="updateCatButton" type="submit" class="btn" value="Modifier"/>
-                                </fieldset>
-                            </form>
                             <form name="insertcategory" action="AdminPage.php" method="POST">
                                 <fieldset>
-                                    <legend>Modifier/Supprimer</legend>
+                                    <legend>Ajouter/Modifier/Supprimer</legend>
                                     <p class="center-align"><?= $productcategoryDEL ? 'La catégorie est supprimée ' : '' ?><p>
-                                    <p class="center-align"><?= $upCatSuccess ? 'La catégorie est modifiée ' : '' ?><p>
+                                    <p class="center-align"><?= $productDEL ? 'Le produit est supprimée ' : '' ?><p>
                                     <ul class="collapsible">
                                         <li>
                                             <div class="collapsible-header">
                                                 <i class="material-icons">filter_drama</i>
-                                                Catégorie
+                                                Catégories
                                             </div>
-                                            <?php foreach ($showCatProd AS $productcategory) { ?>
-                                                <div class="collapsible-body">
-                                                    <span><?= $productcategory->name ?></span>
-                                                    <a class="red darken-1" href="AdminPage.php?DeleteCatProd=<?= $productcategory->id ?>" name="action">
-                                                        <i class="material-icons right">cancel</i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        <?php } ?>
+                                            <div class="collapsible-body row">
+                                                <!-- Modal Trigger AddCat -->
+                                                <a class="waves-effect waves-light btn modal-trigger right" href="#modalAddCat">Ajouter</a>
+                                                <?php foreach ($showCatProd AS $productcategory) { ?>
+                                                    <div class="col s2 m2 l2">
+                                                        <div class="card horizontal">
+                                                            <div class="card-content">
+                                                                <!-- Modal Trigger UpCat -->
+                                                                <a class="modal-trigger" href="#modalUpCat<?= $productcategory->id ?>"><?= $productcategory->name ?></a>
+                                                            </div>
+                                                            <div class="card-action">
+                                                                <a class="red darken-1" href="AdminPage.php?DeleteCatProd=<?= $productcategory->id ?>" name="action">
+                                                                    <i class="material-icons right">cancel</i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal Structure AddCat-->
+                                                    <div id="modalAddCat" class="modal">
+                                                        <div class="modal-content">
+                                                            <form name="addCatProd" action="AdminPage.php" method="POST" >
+                                                                <fieldset>
+                                                                    <legend>Ajouter Catégorie</legend>
+                                                                    <p class="center-align"><?= $addCatSuccess ? 'La catégorie est ajoutée ' : '' ?><p>
+                                                                    <div>
+                                                                        <label for="name">Nom : </label>
+                                                                        <input name="name" type="text" id="name" required class="validate" value="<?= isset($_POST['name']) ? $_POST['name'] : ''; ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['name']) ? $errorArray['name'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input type="submit" class="btn modal-close" name="addCatProd" />
+                                                                </fieldset>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal Structure UpCat-->
+                                                    <div id="modalUpCat<?= $productcategory->id ?>" class="modal">
+                                                        <div class="modal-content">
+                                                            <form name="UpCatProd" action="AdminPage.php?idCatToUpdate=<?= $productcategory->id ?>" method="POST" >
+                                                                <fieldset>
+                                                                    <legend>Modifier Catégorie</legend>
+                                                                    <p class="center-align"><?= $upCatSuccess ? 'La catégorie est modifiée ' : '' ?><p>
+                                                                    <div>
+                                                                        <label for="update">Nom : </label>
+                                                                        <input name="update" type="text" id="update" required class="validate" value="<?= $productcategory->name ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['update']) ? $errorArray['update'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input name="updateCatButton" type="submit" class="btn modal-close" value="Modifier"/>
+                                                                </fieldset>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?> 
+                                            </div>
+                                        </li>
+
                                         <li>
-                                            <div class="collapsible-header"><i class="material-icons">place</i>Produits</div>
-                                            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                                            <div class="collapsible-header">
+                                                <i class="material-icons">place</i>
+                                                Produits
+                                            </div>
+                                            <div class="collapsible-body row">
+                                                <!-- Modal Trigger AddProd -->
+                                                <a class="waves-effect waves-light btn modal-trigger right" href="#modalAddProd">Ajouter</a>
+                                                <?php foreach ($showProd AS $products) { ?>
+                                                    <div class="col s2 m2 l2">
+                                                        <div class="card horizontal">
+                                                            <div class="card-image">
+                                                                <img src="../assets/img/<?= $products->image ?>" alt="<?= $products->description ?>">
+                                                            </div>
+                                                            <div class="card-stacked">
+                                                                <div class="card-content">
+                                                                    <!-- Modal Trigger UpProd -->
+                                                                    <a class="modal-trigger" href="#modalUpProd<?= $products->id ?>"><?= $products->name ?></a>
+                                                                </div>
+                                                                <div class="card-action">
+                                                                    <a class="red darken-1" href="AdminPage.php?DeleteProd=<?= $products->id ?>" name="action">
+                                                                        <i class="material-icons right">cancel</i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal Structure AddProd-->
+                                                    <div id="modalAddProd" class="modal">
+                                                        <div class="modal-content">
+                                                            <form name="AddProd" action="AdminPage.php" method="POST">
+                                                                <fieldset>
+                                                                    <legend>Ajouter produits</legend>
+                                                                    <p class="center-align"><?= $addProdSuccess ? 'Le produit est ajouté ' : '' ?><p>
+                                                                    <div>
+                                                                        <label for="name">Nom : </label>
+                                                                        <input name="name" type="text" id="name" required class="validate" value="<?= isset($_POST['name']) ? $_POST['name'] : ''; ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['name']) ? $errorArray['name'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="image">Image : </label>
+                                                                        <input name="image" type="text" id="image" required class="validate" value="<?= isset($_POST['image']) ? $_POST['image'] : ''; ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['image']) ? $errorArray['image'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="description">Description : </label>
+                                                                        <input name="description" type="text" id="description" required class="validate" value="<?= isset($_POST['description']) ? $_POST['description'] : ''; ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['description']) ? $errorArray['description'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="input-field">
+                                                                        <label for="id_ProductCategory">Catégorie : </label>
+                                                                        <select id="id_ProductCategory" name="id_ProductCategory">
+                                                                            <option value="0" disabled selected>Choix de la Catégorie</option>
+                                                                            <?php foreach ($showCatProd AS $productcategory) { ?>
+                                                                                <option value="<?= $productcategory->id ?>"><?= $productcategory->name ?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        <p class="error"><?= isset($errorArray['id_ProductCategory']) ? $errorArray['id_ProductCategory'] : '' ?></p>
+                                                                    </div>
+                                                                    <input type="submit" class="btn " name="AddProdButt" />
+                                                                </fieldset>
+                                                            </form>                                                            
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal Structure UpProd-->
+                                                    <div id="modalUpProd<?= $products->id ?>" class="modal">
+                                                        <div class="modal-content">
+                                                            <form name="UpProd" action="AdminPage.php?idProdToUpdate=<?= $products->id ?>" method="POST">
+                                                                <fieldset>
+                                                                    <legend>Modifier produits</legend>
+                                                                    <p class="center-align"><?= $upProdSuccess ? 'Le produit est modifié ' : '' ?><p>
+                                                                    <div>
+                                                                        <label for="name">Nom : </label>
+                                                                        <input name="name" type="text" id="name" required class="validate" value="<?= $products->name ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['name']) ? $errorArray['name'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="image">Image : </label>
+                                                                        <input name="image" type="text" id="image" required class="validate" value="<?= $products->image ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['image']) ? $errorArray['image'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="description">Description : </label>
+                                                                        <input name="description" type="text" id="description" required class="validate" value="<?= $products->description ?>" />
+                                                                        <div>
+                                                                            <span class="error"><?= isset($errorArray['description']) ? $errorArray['description'] : ''; ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="input-field">
+                                                                        <label for="id_ProductCategory">Catégorie : </label>
+                                                                        <select id="id_ProductCategory" name="id_ProductCategory">
+                                                                            <option value="0" disabled selected>Choix de la Catégorie</option>
+                                                                            <?php foreach ($showCatProd AS $productcategory) { ?>
+                                                                                <option value="<?= $products->id_ProductCategory ?>"><?= $productcategory->name ?></option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        <p class="error"><?= isset($errorArray['id_ProductCategory']) ? $errorArray['id_ProductCategory'] : '' ?></p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span class="error"><?= isset($errorArray['add']) ? $errorArray['add'] : ''; ?></span>
+                                                                    </div>
+                                                                    <input type="submit" class="btn " name="UpProdButt" />
+                                                                </fieldset>
+                                                            </form>                                                            
+                                                        </div>
+                                                    </div>
+                                                <?php } ?> 
+                                            </div>
                                         </li>
                                     </ul>
-
-
                                 </fieldset>
                             </form>
+                            <!--fin du col-->
                         </div>
-
-
-                        <form name="insertproduct" action="AdminPage.php" method="POST" class="col m12 l6">
-                            <fieldset>
-                                <legend>Ajouter produits</legend>
-                                <div>
-                                    <label for="lastname">Nom : </label>
-                                    <input name="lastname" type="text" id="lastname" required class="validate" value="<?= isset($_POST['lastname']) ? $lastname : ''; ?>" />
-                                    <div>
-                                        <span class="error"><?= isset($errorArray['lastname']) ? $errorArray['lastname'] : ''; ?></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="lastname">Image : </label>
-                                    <input name="lastname" type="text" id="lastname" required class="validate" value="<?= isset($_POST['lastname']) ? $lastname : ''; ?>" />
-                                    <div>
-                                        <span class="error"><?= isset($errorArray['lastname']) ? $errorArray['lastname'] : ''; ?></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="lastname">Description : </label>
-                                    <input name="lastname" type="text" id="lastname" required class="validate" value="<?= isset($_POST['lastname']) ? $lastname : ''; ?>" />
-                                    <div>
-                                        <span class="error"><?= isset($errorArray['lastname']) ? $errorArray['lastname'] : ''; ?></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="lastname">Prix : </label>
-                                    <input name="lastname" type="text" id="lastname" required class="validate" value="<?= isset($_POST['lastname']) ? $lastname : ''; ?>" />
-                                    <div>
-                                        <span class="error"><?= isset($errorArray['lastname']) ? $errorArray['lastname'] : ''; ?></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="lastname">Catégorie : </label>
-                                    <input name="lastname" type="text" id="lastname" required class="validate" value="<?= isset($_POST['lastname']) ? $lastname : ''; ?>" />
-                                    <div>
-                                        <span class="error"><?= isset($errorArray['lastname']) ? $errorArray['lastname'] : ''; ?></span>
-                                    </div>
-                                </div>
-                                <input type="submit" class="btn " name="butSendForm" />
-                            </fieldset>
-                        </form>
                     </div>
                 </li>
             </ul>
