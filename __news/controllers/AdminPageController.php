@@ -6,6 +6,7 @@ require_once '../models/prestations.php';
 require_once '../models/timerdv.php';
 require_once '../models/productcategory.php';
 require_once '../models/products.php';
+require_once '../models/daterdv.php';
 
 // On instancie un nouvel $users objet comme classe users
 $users = new users();
@@ -17,6 +18,8 @@ $timerdv = new timerdv();
 $productcategory = new productcategory();
 // On instancie un nouvel $productcategory objet comme classe productcategory
 $products = new products();
+// On instancie un nouvel $productcategory objet comme classe productcategory
+$daterdv = new daterdv();
 
 // On appel la methode getAppointmentsList dans l'objet $listAppointments
 $listPrestations = $prestations->getPrestationsList();
@@ -26,7 +29,8 @@ $showTimeRDV = $timerdv->ShowTimeRDV();
 $showCatProd = $productcategory->showCatProd();
 // On appel la methode showProduct dans l'objet $showProd
 $showProd = $products->showProduct();
-
+// On appel la methode $resultList dans l'objet showRDV
+$resultList = $daterdv->showRDV();
 
 
 //déclaration des regexs   
@@ -48,10 +52,8 @@ $productDEL = false;
 $addProdSuccess = false;
 $upProdSuccess = false;
 
-/**
- * On créer $$openCollapsible en False pour Afficher le collpase au moment du clic sur Pagination
- */
-$openCollapsible = false;
+$deleteRDVOk = false;
+
 /* on crée une variable $noMatch qu'on initialise à false,  
  * on se servira de cette variable pour afficher un message si nous ne trouvons pas de correspondance lors de la recherche
  */
@@ -60,8 +62,22 @@ $noMatch = false;
  * cette variable va nous permettre d'afficher un message lors de la suppression d'un user
  */
 $deleteOk = false;
-
-
+//Déclaration de 3 variables vides pour activer les collapses lors des clics
+$showme ='';
+$showme2 = '';
+$showme3 = '';
+$showrdvcat = '';
+//vérification pour collapse.
+if (isset($_GET['page']) || (isset($_GET['deleteThis'])) || (isset($_GET['GetUserSuperUser'])) || (isset($_GET['DelSuperUser']))) {
+    $showme = 'active';
+}
+if (isset($_GET['ValideRDV']) || (isset($_GET['DeleteRDV']))) {
+    $showme2 = 'active';
+    $showrdvcat = 'active';
+}
+if (isset($_GET['DeleteCatProd']) || (isset($_GET['idCatToUpdate']))  || (isset($_GET['idProdToUpdate'])) || (isset($_GET['DeleteProd']))) {
+    $showme3 = 'active';
+}
 // on crée les variables page, limit et start pour définir la page sur laquelle nous nous trouvons, la limite de patients à afficher et à partir de quelle ligne.
 $page = (!empty($_GET['page']) ? htmlspecialchars($_GET['page']) : 1); // on utilise une ternaire pour définir la valeur de page
 $limit = 5; // on souhaite afficher 5 patients par page
@@ -289,4 +305,26 @@ if (count($errorArray) == 0 && isset($_GET['idProdToUpdate']) && isset($_POST['U
         $errorArray['add'] = 'La mise à jour à échoué';
     }
 }
+
+/* on test que $_GET['deleteThis'] n'est pas vide
+ * si non vide, on attribue à $patients id la valeur du get avec un htmlspecialchars pour la protection
+ * et on applique la methode deletePatientAndAppointmentsById pour effacer le patient
+ */
+if (!empty($_GET['DeleteRDV'])) {
+    $daterdv->id_USERS = htmlspecialchars($_GET['DeleteRDV']);
+    $daterdv->deleteRDVbyIDUSER();
+    $deleteRDVOk = true;
+}
+
+/* on test que $_GET['GetUserSuperUser'] n'est pas vide
+ * si non vide, on attribue à $users id la valeur du get avec un htmlspecialchars pour la protection
+ * et on applique la methode putUserSuperUser pour upper l'user
+ */
+if (!empty($_GET['ValideRDV'])) {
+    $daterdv->id_USERS = htmlspecialchars($_GET['ValideRDV']);
+    $daterdv->putRDVvalidate();
+    $superUserOK = true;
+}
+
+
 ?>

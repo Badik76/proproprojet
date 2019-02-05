@@ -24,7 +24,7 @@ class timerdv extends database {
      */
     public function ShowTimeRDV() {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table prestations
-        $query = 'SELECT `timeRDV` FROM `TimeRDV` ORDER BY `id`';
+        $query = 'SELECT `id`, `timeRDV` FROM `TimeRDV` ORDER BY `id`';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
         $result = $this->dataBase->query($query);
         // On crée un objet $resultList qui est un tableau.

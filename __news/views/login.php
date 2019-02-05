@@ -1,4 +1,6 @@
 <?php
+// Start the session
+session_start();
 require_once '../controllers/loginController.php';
 ?>
 <!DOCTYPE html>
@@ -6,8 +8,8 @@ require_once '../controllers/loginController.php';
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Projet pro</title>
-        <link rel="shortcut icon" href="../assets/img/doigt.png"/>
+        <title>Wellness Reiki</title>
+        <link rel="shortcut icon" href="../assets/img/logo.png"/>
         <meta name="author" content="Badik76" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" />
@@ -24,10 +26,14 @@ require_once '../controllers/loginController.php';
             <div class="navbar-fixed">
                 <nav class="backgroundcolor">
                     <div class="nav-wrapper">
-                        <a href="../index.php" class="brand-logo"><i class="fas fa-home"></i></a>
-                        <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <a href="../index.php"><img src="../assets/img/logo.png" class="logo left" alt="logo" title="logo" /></a>
+                        <ul id="left-nav" class="left hide-on-med-and-down">
+                            <li>Wellness Reiki</li>
+                        </ul>  
+                        <ul id="right-nav" class="right hide-on-med-and-down">
                             <li><a href="product.php">Produits</a></li>
                             <li><a href="userPage.php">Mes RDVs</a></li>
+                            <li><a href="AdminPage.php">PanelAdmin</a></li>
                             <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Espace Client<i class="material-icons right">arrow_drop_down</i></a></li>
                             <!-- Dropdown Structure -->
                         </ul>
@@ -38,16 +44,32 @@ require_once '../controllers/loginController.php';
                             <li><a class="waves-effect waves-light" href="login.php">Connexion</a>
                             </li>
                         </ul>
+                        <ul class="right hide-on-med-and-up show-on-medium-and-down">
+                            <li><a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></li>
+                        </ul>
                     </div>
                 </nav>   
             </div>
-        </header>
-        <!--end navbar-->    
+            <ul id="slide-out" class="sidenav">          
+                <li><a class="subheader"><img  id="logonavmob" src="../assets/img/logo.png">Wellness Reiki</a></li>
+                <li><div class="divider"></div></li>
+                <li><a href="../index.php"><i class="material-icons">home</i>Accueil</a></li>
+                <li><a href="product.php"><i class="material-icons">lightbulb</i>Produits</a></li>
+                <li><a href="userPage.php"><i class="material-icons">spa</i>Mes RDVs</a></li>
+                <li><a href="AdminPage.php"><i class="material-icons">dashboard</i>Panel Admin</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="subheader">Espace personnel</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="waves-effect" href="register.php"><i class="material-icons">add</i> Inscription</a></li>
+                <li><a class="waves-effect" href="login.php"><i class="material-icons">input</i> Connexion</a></li>
+            </ul>        
+            <!--end navbar-->
+        </header>    
         <div id="logUser" class="card-panel">
             <?php if ($logSuccess) { ?>
                 <h2> Connexion établie ! </h2>
             <?php } else { ?>
-                <form  action="register.php" method="POST">
+                <form  action="login.php" method="POST">
                     <fieldset>
                         <legend>Connexion</legend>
                         <div>

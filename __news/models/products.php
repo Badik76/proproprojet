@@ -24,7 +24,6 @@ class products extends database {
      * On crée une methode qui insert un products dans la table products
      * @return type EXECUTE
      */
-    
     public function addProduct() {
         // Insertion des données du produit à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :name).
@@ -38,7 +37,7 @@ class products extends database {
         // on utilise la méthode execute() via un return
         return $addProduct->execute();
     }
-    
+
     /**
      * On crée un methode qui retourne la liste des produits de la table Produits
      * @return type ARRAY
@@ -54,7 +53,24 @@ class products extends database {
         // On retourne le resultat
         return $resultList;
     }
-    
+
+    /**
+     * On crée un methode qui retourne un tableau qui contient les informations d'un produit selon l'id_ProductCategory de la table products
+     * @return BOOLEAN
+     */
+    public function getProductByIdCat() {
+        
+        // On met notre requète dans la variable $query qui selectionne tous les champs de la table users l'id est egal à :id via marqueur nominatif sur id
+        $query = 'SELECT `id`, `name`, `image`, `description`, `id_ProductCategory` FROM `Products` WHERE `id_ProductCategory` = :id_ProductCategory  ORDER BY `id_ProductCategory`';
+        // On crée un objet $findProfil qui utilise la fonction prepare avec comme paramètre $query        
+        $findProduct = $this->dataBase->prepare($query);
+        // on attribue la valeur via bindValue et on recupère les attributs de la classe via $this
+        $findProduct->bindValue(':id_ProductCategory', $this->id_ProductCategory, PDO::PARAM_INT);
+        $findProduct->execute();
+        $products = $findProduct->fetchAll(PDO::FETCH_OBJ);
+        return $products;         
+    }
+
     public function updateProd() {
         // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :name).
@@ -66,11 +82,11 @@ class products extends database {
         $updateProd->bindValue(':image', $this->image, PDO::PARAM_STR);
         $updateProd->bindValue(':description', $this->description, PDO::PARAM_STR);
         $updateProd->bindValue(':id_ProductCategory', $this->id_ProductCategory, PDO::PARAM_STR);
-                // on utilise la méthode execute() via un return
+        // on utilise la méthode execute() via un return
         return $updateProd->execute();
     }
-    
-        public function deleteProd() {
+
+    public function deleteProd() {
         // on met en place les attributs du PDO $dataBase avec ATTR_ERRMODE et ERRMODE_EXCEPTION pour genérer des message en cas d'erreur
         $this->dataBase->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try {
@@ -90,7 +106,6 @@ class products extends database {
             echo 'Erreur : ' . $errorMessage->getMessage(); // On affiche le message d'erreur avec la methode getMessage
         }
     }
-    
 
     public function __destruct() {
         // On appelle le destruct du parent

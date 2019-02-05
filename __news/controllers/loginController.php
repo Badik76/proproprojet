@@ -8,17 +8,14 @@ require_once '../models/users.php';
 $users = new users();
 
 //déclaration des regexs   
-$regexName = '/^[a-zA-Zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ-]+$/';
-$regexBirthdate = '/^(0[1-9]|([1-2][0-9])|3[01])\/(0[1-9]|1[012])\/((19|20)[0-9]{2})$/';
 $regexEmail = '/^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,6}$/'; // regex date au format yyyy-mm-dd
-$regexPhoneNumber = '/^[0-9]{10,10}$/';
 $regexPassword = "/^.{6,}+$/";
 
 // créa tableau pour error
 $errorArray = [];
 
-//Initialise $addSuccess en False pour afficher l'ajout de l'user
-$addSuccess = false;
+//Initialise $logSuccess en False pour afficher la connexion de l'user
+$logSuccess = false;
 
 
 //On test la valeur email dans l'array $_POST, si elle existe via premier if

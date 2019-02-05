@@ -2,6 +2,9 @@ body {
     font-family: 'Thasadith', sans-serif;
     background-color: #fcfcfc;
 }
+#logonavmob {
+    width: 50px;
+}
 .row {
     margin: 0px;
 }
@@ -23,6 +26,10 @@ legend {
 
 h2 {
     color : #4db6ac
+}
+
+.backgroundcolor-text {
+    color: #4db6ac;
 }
 
 .backgroundcolor {
@@ -110,4 +117,12 @@ label {
 
 .card .card-title{
     font-size: 35px;
+}
+
+.navtitle {
+    margin-left: 10px;
+}
+.logo {
+    vertical-align: center;
+    max-width: 4rem;
 }

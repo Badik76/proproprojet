@@ -8,8 +8,8 @@ require_once '../controllers/userPageController.php'
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Projet pro</title>
-        <link rel="shortcut icon" href="../assets/img/doigt.png"/>
+        <title>Wellness Reiki</title>
+        <link rel="shortcut icon" href="../assets/img/logo.png"/>
         <meta name="author" content="Badik76" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" />
@@ -23,13 +23,17 @@ require_once '../controllers/userPageController.php'
     <body>
         <!--navbar-->
         <header>
-            <div class="navbar">
+            <div class="navbar-fixed">
                 <nav class="backgroundcolor">
                     <div class="nav-wrapper">
-                        <a href="../index.php" class="brand-logo"><i class="fas fa-home"></i></a>
-                        <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <a href="../index.php"><img src="../assets/img/logo.png" class="logo left" alt="logo" title="logo" /></a>
+                        <ul id="left-nav" class="left hide-on-med-and-down">
+                            <li>Wellness Reiki</li>
+                        </ul>  
+                        <ul id="right-nav" class="right hide-on-med-and-down">
                             <li><a href="product.php">Produits</a></li>
                             <li><a href="userPage.php">Mes RDVs</a></li>
+                            <li><a href="AdminPage.php">PanelAdmin</a></li>
                             <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Espace Client<i class="material-icons right">arrow_drop_down</i></a></li>
                             <!-- Dropdown Structure -->
                         </ul>
@@ -40,87 +44,124 @@ require_once '../controllers/userPageController.php'
                             <li><a class="waves-effect waves-light" href="login.php">Connexion</a>
                             </li>
                         </ul>
+                        <ul class="right hide-on-med-and-up show-on-medium-and-down">
+                            <li><a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></li>
+                        </ul>
                     </div>
                 </nav>   
             </div>
-        </header>
-        <!--end navbar-->        
+            <ul id="slide-out" class="sidenav">          
+                <li><a class="subheader"><img  id="logonavmob" src="../assets/img/logo.png">Wellness Reiki</a></li>
+                <li><div class="divider"></div></li>
+                <li><a href="../index.php"><i class="material-icons">home</i>Accueil</a></li>
+                <li><a href="product.php"><i class="material-icons">lightbulb</i>Produits</a></li>
+                <li><a href="userPage.php"><i class="material-icons">spa</i>Mes RDVs</a></li>
+                <li><a href="AdminPage.php"><i class="material-icons">dashboard</i>Panel Admin</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="subheader">Espace personnel</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="waves-effect" href="register.php"><i class="material-icons">add</i> Inscription</a></li>
+                <li><a class="waves-effect" href="login.php"><i class="material-icons">input</i> Connexion</a></li>
+            </ul>        
+            <!--end navbar-->
+        </header>        
 
         <div class="container-fluid row center">
 
+            <?php if ($userIsFind) { ?>
+                <div class="card col m12 l6">    
+                    <?php if ($noRDV) { ?>
+                        <p>Pas de RDV programmé</p> 
+                    <?php } else { ?>
+                        <div class="card-title groundcolor"><h2><i class="material-icons">spa</i> Mon prochain RDV <i class="material-icons">spa</i></h2></div>
+                        <div class="card-content">
+                            <table class="centered highlight responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Soin</th>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>Modif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if ($rdvIsFind) {
+                                        ?>
+                                        <tr>
+                                            <td><?= $daterdv->Prestaname ?></td>
+                                            <td><?= $daterdv->dateRDV ?></td>
+                                            <td><?= $daterdv->timeRDV ?></td>
+                                            <td><a href="userPage.php?idUser=<?= $users->id ?>&DeleteRDV=<?= $daterdv->id ?>" name="action">
+                                                    <i class="material-icons red-text">cancel</i>
+                                                </a>
+                                                <a class="" href="userPage.php?idUser=<?= $users->id ?>&updateRDV=<?= $daterdv->id ?>" name="action">
+                                                    <i class="material-icons green-text">autorenew</i>
+                                                </a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                        <div class="divider"></div>
+                        <?php
+                    }
+                }
+                ?>
 
-            <!--    FOREACH-->
-            <div class="card col m12 l6">        
-                <div class="card-title groundcolor"><h2><i class="material-icons">spa</i> Mon prochain RDV <i class="material-icons">spa</i></h2></div>
-                <div class="card-content">
-                    <table class="centered highlight responsive-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Heure</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>DateRDV.date.RDV</td>
-                                <td>TimeRDV.timeRDV</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action">
-                    <button class="btn red darken-1" type="submit" name="action">Delete
-                        <i class="material-icons right">cancel</i>
-                    </button>
-                    <button class="btn" type="submit" name="action">Upgrade
-                        <i class="material-icons right">autorenew</i>
-                    </button>
-                </div>
-                <div class="divider"></div>
-                <div class="card-title groundcolor"><h2><i class="material-icons">spa</i> Mes anciens RDV <i class="material-icons">spa</i></h2></div>
-                <div class="card-content">
-                    <table class="centered highlight responsive-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Heure</th>
-                            </tr>
-                        </thead>
-                        FOREACH
-                        <tbody>
-                            <tr>
-                                <td>DateRDV.date.RDV</td>
-                                <td>TimeRDV.timeRDV</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="card col m12 l6"> 
-                <div class="card-title groundcolor">
-                    <h2><i class="material-icons">group</i>
-                        Mon Profil 
-                        <i class="material-icons">group</i>
-                    </h2>
+                <?php if ($userIsFind) { ?>
+                    <div class="card-title groundcolor"><h2><i class="material-icons">spa</i> Mes anciens RDV <i class="material-icons">spa</i></h2></div>
+                    <div class="card-content">
+                        <table class="centered highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Soin</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                </tr>
+                            </thead>
+                            <?php foreach ($resultList AS $daterdv) { ?>
+                                <tbody>
+                                    <tr>
+                                        <td><?= $daterdv->Prestaname ?></td>
+                                        <td><?= $daterdv->dateRDV ?></td>
+                                        <td><?= $daterdv->timeRDV ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <?php
-                if ($addSuccess) {
-                    ?>
-                    <p>Les modifications ont bien été prises en compte</p>.
+            }
+            if ($userIsFind) {
+                ?>
+                <div class="card col m12 l6"> 
+                    <div class="card-title groundcolor">
+                        <h2><i class="material-icons">group</i>
+                            Mon Profil 
+                            <i class="material-icons">group</i>
+                        </h2>
+                    </div>
                     <?php
-                }
-                if ($deleteOk) {
-                    ?>
-                    <p>Profil supprimé</p>.
-                    <?php
-                }
-                if ($userIsFind) {
-                    ?>
+                    if ($addSuccess) {
+                        ?>
+                        <p>Les modifications ont bien été prises en compte</p>.
+                        <?php
+                    }
+                    if ($deleteOk) {
+                        ?>
+                        <p>Profil supprimé</p>.
+                    <?php }
+                    ?>               
                     <div class="card-content">
                         <form id="inscription" method="post" action="userPage.php?idUser=<?= $users->id ?>">
                             <fieldset>
-                                <legend>Mise à Jour  <p class="hide">TypeUsers.name if superusers = icon grade</p></legend>
+                                <legend>Mise à Jour <?php if ($idSU) { ?>
+                                        <i class="material-icons right">grade</i>
+                                    <?php } ?></legend>
                                 <div>
                                     <label for="lastname">Nom : (DelaMolleFesse)</label>
                                     <div>
@@ -176,14 +217,13 @@ require_once '../controllers/userPageController.php'
                             </fieldset>
                         </form>
                     </div>
-                <?php } else { ?>
-                    <div>
-                        <p>Votre Profil n'a pas été trouvé.</p>
-                        <a href="../index.php" class="waves-effect waves-light btn"><i class="material-icons left">people</i>RETOUR</a>
-                    </div>
-                <?php } ?>
-            </div>
-        </div>
+                </div>
+            <?php } else { ?>
+                <div>
+                    <p>Votre Profil n'a pas été trouvé.</p>
+                </div>
+            <?php } ?>
+        </div>        
         <!--coryright-->
         <div class="container-fluid rem10">
             2018 - Made by Badik 🖕 with <i class="fas fa-heart red-text rem10"></i>

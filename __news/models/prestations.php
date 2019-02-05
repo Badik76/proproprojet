@@ -59,16 +59,17 @@ class prestations extends database {
     public function getPrestationById() {
         $isCorrect = false;
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users l'id est egal à :id via marqueur nominatif sur id
-        $query = 'SELECT `id`, `Prestaname`, `description` FROM `Prestations` WHERE `id` = :idPresta';
+        $query = 'SELECT `id`, `Prestaname`, `description` FROM `Prestations` WHERE `id` = :id_Prestations';
         // On crée un objet $findProfil qui utilise la fonction prepare avec comme paramètre $query        
         $findPresta = $this->dataBase->prepare($query);
         // on attribue la valeur via bindValue et on recupère les attributs de la classe via $this
-        $findPresta->bindValue(':idPresta', $this->id, PDO::PARAM_INT);
+        $findPresta->bindValue(':id_Prestations', $this->id, PDO::PARAM_INT);
         if ($findPresta->execute()) {
             $presta = $findPresta->fetch(PDO::FETCH_OBJ);
             // if imbriqué pour hydrater les valeurs
             // si $profil est un objet(existe dans la table), on attribue directement les valeurs de l'objet $profil
             if (is_object($presta)) {
+                $this->id = $presta->id;
                 $this->prestaname = $presta->prestaname;
                 $this->description = $presta->description;
                 $isCorrect = true;

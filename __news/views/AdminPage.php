@@ -2,15 +2,14 @@
 // Start the session
 session_start();
 require_once '../controllers/AdminPageController.php';
-$_SESSION['test'] = $openCollapsible;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Projet pro</title>
-        <link rel="shortcut icon" href="../assets/img/doigt.png"/>
+        <title>Wellness Reiki</title>
+        <link rel="shortcut icon" href="../assets/img/logo.png"/>
         <meta name="author" content="Badik76" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" />
@@ -27,8 +26,11 @@ $_SESSION['test'] = $openCollapsible;
             <div class="navbar-fixed">
                 <nav class="backgroundcolor">
                     <div class="nav-wrapper">
-                        <a href="../index.php" class="brand-logo"><i class="fas fa-home"></i></a>
-                        <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <a href="../index.php"><img src="../assets/img/logo.png" class="logo left" alt="logo" title="logo" /></a>
+                        <ul id="left-nav" class="left hide-on-med-and-down">
+                            <li>Wellness Reiki</li>
+                        </ul>  
+                        <ul id="right-nav" class="right hide-on-med-and-down">
                             <li><a href="product.php">Produits</a></li>
                             <li><a href="userPage.php">Mes RDVs</a></li>
                             <li><a href="AdminPage.php">PanelAdmin</a></li>
@@ -42,14 +44,31 @@ $_SESSION['test'] = $openCollapsible;
                             <li><a class="waves-effect waves-light" href="login.php">Connexion</a>
                             </li>
                         </ul>
+                        <ul class="right hide-on-med-and-up show-on-medium-and-down">
+                            <li><a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></li>
+                        </ul>
                     </div>
                 </nav>   
             </div>
+            <ul id="slide-out" class="sidenav">          
+                <li><a class="subheader"><img  id="logonavmob" src="../assets/img/logo.png">Wellness Reiki</a></li>
+                <li><div class="divider"></div></li>
+                <li><a href="../index.php"><i class="material-icons">home</i>Accueil</a></li>
+                <li><a href="product.php"><i class="material-icons">lightbulb</i>Produits</a></li>
+                <li><a href="userPage.php"><i class="material-icons">spa</i>Mes RDVs</a></li>
+                <li><a href="AdminPage.php"><i class="material-icons">dashboard</i>Panel Admin</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="subheader">Espace personnel</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="waves-effect" href="register.php"><i class="material-icons">add</i> Inscription</a></li>
+                <li><a class="waves-effect" href="login.php"><i class="material-icons">input</i> Connexion</a></li>
+            </ul>        
+            <!--end navbar-->
         </header>
-        <!--end navbar-->
+
         <div class="container-fluid center">
             <ul class="collapsible">
-                <li id="colUser" class="<?= $_SESSION['test'] ? 'active' : '' ?>">
+                <li id="colUser" class="<?= $showme ?>">
                     <div class="collapsible-header">
                         <h2><i class="material-icons">group</i> Gestion des Clients <i class="material-icons">group</i></h2>
                     </div>
@@ -120,61 +139,51 @@ $_SESSION['test'] = $openCollapsible;
                         <!-- fin du if -->
                     </div>
                 </li>
-                <li>
+                <li class="<?= $showme2 ?>">
                     <div class="collapsible-header">
                         <h2><i class="material-icons">spa</i> Gestion des RDV's <i class="material-icons">spa</i></h2>
                     </div>
-                    <div class="collapsible-body">
-                        <!--            <div class="card col m12 l6">
-                                        <form id="addRDV" action="AdminPage.php" method="POST">
-                                            <fieldset>
-                                                <legend>Ajouter un RDV</legend>
-                                                <div>
-                                                    <label for="daterdv">Date du RDV</label>
-                                                    <input name="daterdv" type="text" id="daterdv" required class="validate datepicker" value="<?= isset($_POST['date']) ? $_POST['date'] : ''; ?>" />
-                                                </div>
-                                                <div class="input-field">
-                                                    <label for="idTimeRDV">Heure</label>
-                                                    <select id="idTimeRDV" name="idTimeRDV">
-                                                        <option value="0" disabled selected>Choix de l'heure du RDV</option>
-                        <?php foreach ($showTimeRDV AS $timerdv) { ?>
-                                                                                                                                                                                                                                                                                                                                                                                                                <option value="<?= $timerdv->timeRDV ?>"><?= $timerdv->timeRDV ?></option>
-                        <?php } ?>
-                                                    </select>
-                                                    <p class="error"><?= isset($errorArray['idTimeRDV']) ? $errorArray['idTimeRDV'] : '' ?></p>
-                                                </div>
-                                                <div class="input-field">
-                                                    <input name="addButton" type="submit" class="waves-effect waves-light btn teal" value="Ajouter le RDV"/>
-                        <?php foreach ($errorArray AS $error) { ?>
-                                                                                                                                                                                                                                                                                                                                                                                                            <p class="error"><?= $error ?></p>
-                        <?php } ?>                            
-                                                </div>
-                                        </form>
-                                    </div>  -->
+                    <div class="collapsible-body">                        
                         <ul class="collapsible col l12">
-                            <?php foreach ($listPrestations AS $prestation) { ?>
-                                <li>
+                            <?php foreach ($listPrestations AS $prestations) { ?>
+                            <li class="<?= $showrdvcat ?>">
                                     <div class="collapsible-header">
                                         <i class="material-icons">filter_drama</i>
-                                        <?= $prestation->Prestaname ?>
+                                        <?= $prestations->Prestaname ?>
                                         <span class="badge">if Resa.id +1 = count!= Resa.id.length echo Resa</span></div>
-                                    <div class="collapsible-body">
-                                        foreach
-                                        <p><?= $users->lastname ?>  <?= $users->firstname ?> <?= $users->phone ?> dateRDV.dateRDV TimeeRDV.time.RDV</p>
-                                        <button class="btn red darken-1" type="submit" name="action">Annuler
-                                            <i class="material-icons right">cancel</i>
-                                        </button>
-                                        <button class="btn" type="submit" name="action">Valider
-                                            <i class="material-icons right">done</i>
-                                        </button>
-                                        fin foreach
+                                    <div class="collapsible-body row">
+
+                                        <?php
+                                        foreach ($resultList AS $daterdv) {
+                                            if ($prestations->id !== $daterdv->id_Prestations) {
+                                                
+                                            } else {
+                                                ?>
+                                                <div class="col s2 m2 l2">
+                                                    <div class="card horizontal">
+                                                        <div class="card-content">
+                                                            <p><?= $daterdv->Prestaname ?> <?= $daterdv->lastname ?>  <?= $daterdv->firstname ?> 
+                                                                0<?= $daterdv->phone ?> <?= $daterdv->dateRDV ?> <?= $daterdv->timeRDV ?> </p>
+                                                            <a class="green darken-1" href="AdminPage.php?ValideRDV=<?= $daterdv->id_USERS ?>" name="action">
+                                                                <i class="material-icons right green-text">check</i>
+                                                            </a>
+                                                            <a href="AdminPage.php?DeleteRDV=<?= $daterdv->id_USERS ?>" name="action">
+                                                                <i class="material-icons right red-text">cancel</i>                                                           
+                                                            </a>
+                                                        </div>                                                            
+                                                    </div>                                            
+                                                </div>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </li>
                             <?php } ?>
                         </ul>
                     </div>
                 </li>
-                <li>
+                <li class="<?= $showme3 ?>">
                     <div class="collapsible-header">                        
                         <h2><i class="material-icons">lightbulb_outline</i>Gestion des Produits<i class="material-icons">lightbulb_outline</i></h2>
                     </div>
