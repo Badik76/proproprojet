@@ -65,19 +65,6 @@ if (isset($_POST['timeRDV_id'])) {
     $errorArray['timeRDV_id'] = '*Veuillez sélectionner une heure';
 }
 
-//On test la valeur idUser l'array $_POST pour savoir si elle existe
-//Si nous attribuons à idUser la valeur du $_POST
-if (isset($_POST['users_id'])) {
-    $users->users_id = $_POST['users_id'];
-    // OU si le formulaire a été validé mais que il n'y a pas d'élément sélectionné dans le menu déroulant
-    // on crée un message d'erreur pour pouvoir l'afficher
-    if (is_nan($users->users_id)) {
-        $errorArray['users_id'] = '*Veuillez sélectionner uniquement un user de la liste';
-    }
-} else if (isset($_POST['addButton']) && !array_key_exists('users_id', $_POST)) {
-    $errorArray['users_id'] = '*Veuillez sélectionner un user';
-}
-
 // On compte le nombre de valeur dans $formError et On vérifie que nous avons crée une entrée addButton dans l'array $_POST,
 // Si tout est réuni :
 // On formate la date en dateUS
@@ -88,7 +75,7 @@ if (count($errorArray) == 0 && isset($_POST['addButton']) && isset($_GET['presta
     $dateUs = $date->format('Y-m-d');
     $daterdv->dateRDV_dateRDV = $dateUs;
     $daterdv->timeRDV_id = $_POST['timeRDV_id'];
-    $daterdv->users_id = $_POST['users_id'];
+    $daterdv->users_id = $_SESSION['users_id'];
     if (!$daterdv->addRDV()) {
         $errorArray['add'] = 'l\'enregistrement a échoué';
     } else {

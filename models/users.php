@@ -13,7 +13,7 @@ class octopus_users extends database {
     public $users_firstname;
     public $users_phone;
     public $users_email;
-    public $users_password;
+    private $users_password;
     public $users_adress;
     public $users_birthdate;
     public $typeUsers_id;
@@ -105,10 +105,12 @@ class octopus_users extends database {
         // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
         $query = 'UPDATE `octopus_users` '
-                . 'SET `users_lastname` = :users_lastname, `users_firstname` = :users_firstname,'
-                . ' `users_phone` = :users_phone, `users_email` = :users_email,'
-                . ' `users_birthdate` = :users_birthdate, `users_adress` = :users_adress'
-                . 'WHERE `users_id` = :users_id';
+                . 'SET `users_lastname` = :users_lastname,'
+                . ' `users_firstname` = :users_firstname,'
+                . ' `users_phone` = :users_phone,'
+                . ' `users_email` = :users_email,'
+                . ' `users_birthdate` = :users_birthdate'
+                . ' WHERE `users_id` = :users_id';
         $updateUser = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $updateUser->bindValue(':users_lastname', $this->users_lastname, PDO::PARAM_STR);
@@ -118,7 +120,6 @@ class octopus_users extends database {
         $date = DateTime::createFromFormat('d/m/Y', $this->users_birthdate);
         $dateUs = $date->format('Y-m-d');
         $updateUser->bindValue(':users_birthdate', $dateUs, PDO::PARAM_STR);
-        $updateUser->bindValue(':users_adress', $this->users_adress, PDO::PARAM_STR);
         $updateUser->bindValue(':users_id', $this->users_id, PDO::PARAM_INT);
         // on utilise la méthode execute() via un return
         return $updateUser->execute();
@@ -244,9 +245,18 @@ class octopus_users extends database {
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $verifUser->bindValue(':users_email', $users_email, PDO::PARAM_STR);
         $verifUser->execute();
-        $infoUser = $verifUser->fetch(PDO::FETCH_OBJ);        
+        $infoUser = $verifUser->fetch(PDO::FETCH_OBJ);
         return $infoUser;
     }
+
+//    public function veriftypeUsers($typeUsers_id) {
+//        $querverifytypeUsers = 'SELECT * FROM `octopus_users` WHERE `typeUsers_id` = :typeUsers_id';
+//        $veriftypeUser = $this->dataBase->prepare($querverifytypeUsers);
+//        $veriftypeUser->bindValue(':typeUsers_id', $typeUsers_id, PDO::PARAM_STR);
+//        $veriftypeUser->execute();
+//        $infotypeUser = $veriftypeUser->fetch(PDO::FETCH_OBJ);
+//        return $infotypeUser;
+//    }
 
     public function __destruct() {
         // On appelle le destruct du parent

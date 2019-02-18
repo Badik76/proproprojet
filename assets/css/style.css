@@ -119,10 +119,17 @@ label {
     font-size: 35px;
 }
 
-.navtitle {
-    margin-left: 10px;
-}
 .logo {
     vertical-align: center;
-    max-width: 4rem;
+    max-width: 3.8rem;
+    padding-top: 2px;
+}
+
+.greyscale {
+    filter : grayscale(1);
+    max-height: 333px;
+}
+
+.prati {
+    max-height: 200px;
 }

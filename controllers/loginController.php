@@ -16,11 +16,16 @@ $errorArray = [];
 
 //Initialise $logSuccess en False pour afficher la connexion de l'user
 $logSuccess = false;
-
+//Initialise $isSuperUser en false pour afficher superuser template.
+$isSuperUser = false;
+//Initialise $isSuperUser en false pour afficher superuser template.
+$isAdmin = false;
+$userLog = false;
+$logError = false;
 
 //On test la valeur email dans l'array $_POST, si elle existe via premier if
 if (isset($_POST['users_email'])) {
-   $users_email = htmlspecialchars($_POST['users_email']);
+    $users_email = htmlspecialchars($_POST['users_email']);
     // Si le post est vide
     if (empty($users_email)) {
         // J'affiche le message d'erreur
@@ -28,13 +33,50 @@ if (isset($_POST['users_email'])) {
     }
 }
 
+//On test la valeur password dans l'array $_POST, si elle existe via premier if
+if (isset($_POST['users_password'])) {
+    $users_password = htmlspecialchars($_POST['users_password']);
+    // Si le post est vide
+    if (empty($users_password)) {
+        // J'affiche le message d'erreur
+        $errorArray['users_password'] = 'Veuillez saisir votre password';
+    }
+}
 
 
 //vérification du password pour connexion session
 if (count($errorArray) == 0 && isset($_POST['logButton'])) {
     $infoUser = $users->verifUser($users_email);
-    var_dump($infoUser);       
-   }
-
-
+    $logSuccess = true;
+    if (is_object($infoUser)) {
+        if (password_verify($users_password, $infoUser->users_password)) {
+            $_SESSION['users_id'] = $infoUser->users_id;
+            $_SESSION['users_lastname'] = $infoUser->users_lastname;
+            $_SESSION['users_firstname'] = $infoUser->users_firstname;
+            $_SESSION['users_phone'] = $infoUser->users_phone;
+            $_SESSION['users_email'] = $infoUser->users_email;
+            $_SESSION['typeUsers_id'] = $infoUser->typeUsers_id;
+            $_SESSION['userLog'] = true;
+        }
+    } else {
+        session_destroy();
+        $logSuccess = false;
+        $logError = true;
+    }
+    if (isset($_SESSION['typeUsers_id'])) {
+//on vérifie le type de l'user
+        if ($_SESSION['typeUsers_id'] == 3) {
+            $_SESSION['isUser'] = true;
+        }
+        //on vérifie que l'user est un superuser
+        if ($_SESSION['typeUsers_id'] == 2) {
+            $_SESSION['isSuperUser'] = true;
+        }
+//on vérifie que l'user est un admin
+        if ($_SESSION['typeUsers_id'] == 1) {
+            $_SESSION['isAdmin'] = true;
+        }
+    }
+    var_dump($_SESSION);
+}
 ?>

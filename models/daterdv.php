@@ -194,7 +194,44 @@ class daterdv extends database {
         // on utilise la méthode execute() via un return
         return $putRDVvalidate->execute();
     }
+    
+        /*
+     * Création d'une méthode qui archivera le rdv.
+     */
 
+    public function putRDVarchivate() {
+        // Insertion des données du patient à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
+        // Insertion des valeurs des variables via les marqueurs nominatifs, ex :lastname).
+        $query = 'UPDATE `octopus_dateRDV` SET `dateRDV_validate` = 0 '
+                . 'WHERE `dateRDV_id`=:dateRDV_id';
+        $putRDVvalidate = $this->dataBase->prepare($query);
+        // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
+        $putRDVvalidate->bindValue(':dateRDV_id', $this->dateRDV_id, PDO::PARAM_INT);
+        // on utilise la méthode execute() via un return
+        return $putRDVvalidate->execute();
+    }
+
+        public function updaterdv() {
+        // MAJ des données de user à l'aide d'une requête préparée avec un UPDATE et le nom des champs de la table
+        // Insertion des valeurs des variables via les marqueurs nominatifs, ex :name).
+        $query = 'UPDATE `octopus_dateRDV` '
+                . 'SET `dateRDV_id`=:dateRDV_id, `dateRDV_dateRDV`=:dateRDV_dateRDV,'
+                . '`dateRDV_validate`=:dateRDV_validate, `users_id`= :users_id,'
+                . '`prestations_id` = :prestations_id, `timeRDV_id` = :timeRDV_id'
+                . 'WHERE `products_id`= :products_id';
+        $updateProd = $this->dataBase->prepare($query);
+        // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
+        $updateProd->bindValue(':dateRDV_id', $this->dateRDV_id, PDO::PARAM_INT);
+        $updateProd->bindValue(':dateRDV_dateRDV', $this->dateRDV_dateRDV, PDO::PARAM_STR);
+        $updateProd->bindValue(':dateRDV_validate', $this->dateRDV_validate, PDO::PARAM_STR);
+        $updateProd->bindValue(':users_id', $this->users_id, PDO::PARAM_STR);
+        $updateProd->bindValue(':prestations_id', $this->prestations_id, PDO::PARAM_STR);
+        $updateProd->bindValue(':timeRDV_id', $this->timeRDV_id, PDO::PARAM_STR);
+        // on utilise la méthode execute() via un return
+        return $updateProd->execute();
+    }
+  
+    
     public function __destruct() {
         // On appelle le destruct du parent
         parent::__destruct();

@@ -37,6 +37,7 @@ $resultList = $daterdv->showRDV();
 $regexName = '/^[A-z\'\- 0-9]{1,}$/';
 $regexImage = '/[^\s]+(\.(?i)(jpg|png|gif|bmp|jpeg))$/';
 $regexDescri = '/^[A-z\'\- 0-9]{1,}$/';
+$regexPrix = '/^[0-9]{1,6}$/';
 // créa tableau pour error
 $errorArray = [];
 
@@ -63,7 +64,7 @@ $noMatch = false;
  */
 $deleteOk = false;
 //Déclaration de 3 variables vides pour activer les collapses lors des clics
-$showme ='';
+$showme = '';
 $showme2 = '';
 $showme3 = '';
 $showrdvcat = '';
@@ -75,7 +76,7 @@ if (isset($_GET['ValideRDV']) || (isset($_GET['DeleteRDV']))) {
     $showme2 = 'active';
     $showrdvcat = 'active';
 }
-if (isset($_GET['DeleteCatProd']) || (isset($_GET['idCatToUpdate']))  || (isset($_GET['idProdToUpdate'])) || (isset($_GET['DeleteProd']))) {
+if (isset($_GET['DeleteCatProd']) || (isset($_GET['idCatToUpdate'])) || (isset($_GET['idProdToUpdate'])) || (isset($_GET['DeleteProd']))) {
     $showme3 = 'active';
 }
 // on crée les variables page, limit et start pour définir la page sur laquelle nous nous trouvons, la limite de patients à afficher et à partir de quelle ligne.
@@ -117,6 +118,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 if (!empty($_GET['GetUserSuperUser'])) {
     $users->users_id = htmlspecialchars($_GET['GetUserSuperUser']);
     $users->putUserSuperUser();
+    $_SESSION['typeUsers_id'] = $infoUser->typeUsers_id;
     $superUserOK = true;
 }
 /* on test que $_GET['DelSuperUser'] n'est pas vide
@@ -126,6 +128,7 @@ if (!empty($_GET['GetUserSuperUser'])) {
 if (!empty($_GET['DelSuperUser'])) {
     $users->users_id = htmlspecialchars($_GET['DelSuperUser']);
     $users->delSuperUser();
+    $_SESSION['typeUsers_id'] = $infoUser->typeUsers_id;
     $superUserDEL = true;
 }
 
@@ -249,6 +252,22 @@ if (isset($_POST['products_description'])) {
     }
 }
 
+//On test la valeur image dans l'array $_POST, si elle existe via premier if
+if (isset($_POST['products_prix'])) {
+    // Variable image qui vérifie que les caractères speciaux soit converties en entité html via htmlspecialchars = protection
+    $products->products_prix = htmlspecialchars($_POST['products_prix']);
+    // On test que la variable n'est pas égale à la regeX
+    if (!preg_match($regexPrix, $products->products_prix)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['products_prix'] = 'Le prix n\'est pas valide';
+    }
+    // Si le post lastname n'est pas rempli (donc vide)
+    if (empty($products->products_prix)) {
+        // je crée le message d'erreur suivant dans le tableau d'erreur
+        $errorArray['products_prix'] = 'Champs obligatoire';
+    }
+}
+
 //SELECT CATEGORYPRODUIT
 //On test la valeur ProdCat l'array $_POST pour savoir si elle existe
 //Si nous attribuons à ProdCat la valeur du $_POST
@@ -325,6 +344,4 @@ if (!empty($_GET['ValideRDV'])) {
     $daterdv->putRDVvalidate();
     $superUserOK = true;
 }
-
-
 ?>

@@ -17,10 +17,6 @@ if (isset($_GET['productCategory_id'])) {
 
 // On appel la methode showCatProd dans l'objet $showCatProd
 $showCatProd = $productcategory->showCatProd();
-// On appel la methode showProduct dans l'objet $showProd
-$showProd = $products->showProduct();
 // On appel la methode getProductByIdCat dans l'objet $findCatProd
 $findProd = $products->getProductByIdCat();
-
-
 ?>

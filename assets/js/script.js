@@ -6,6 +6,7 @@ $('.modal').modal();
 $('.sidenav').sidenav();
 $('.tooltipped').tooltip();
 $(".dropdown-trigger").dropdown();
+$('.materialboxed').materialbox();
 $(".buttoncollapse").sidenav();
 // carou
 $('.carousel.carousel-slider').carousel({
@@ -16,15 +17,6 @@ $('.carousel.carousel-slider').carousel({
 setInterval(function () {
     $('.carousel').carousel('next');
 }, 7000);
-////hover btn
-//$('.btn').hover(
-//        function () {
-//            $(this).addClass('pulse');
-//        },
-//        function () {
-//            $(this).removeClass('pulse');
-//        }
-//);
 //définition du datepicker
 $('.datepicker').datepicker({
     i18n: {

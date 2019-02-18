@@ -12,6 +12,7 @@ class products extends database {
     public $products_name;
     public $products_image;
     public $products_description;
+    public $products_prix;
     public $productCategory_id;
 
     // on crée une methode magique __construct()
@@ -28,13 +29,14 @@ class products extends database {
         // Insertion des données du produit à l'aide d'une requête préparée avec un INSERT INTO et le nom des champs de la table
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :name).
         $query = 'INSERT INTO `octopus_products` '
-                . '(`products_name`, `products_image`, `products_description`, `productCategory_id`)'
-                . 'VALUES (:products_name, :products_image, :products_description, :productCategory_id)';
+                . '(`products_name`, `products_image`, `products_description`, `products_prix`, `productCategory_id`)'
+                . 'VALUES (:products_name, :products_image, :products_description, :products_prix, :productCategory_id)';
         $addProduct = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
         $addProduct->bindValue(':products_name', $this->products_name, PDO::PARAM_STR);
         $addProduct->bindValue(':products_image', $this->products_image, PDO::PARAM_STR);
         $addProduct->bindValue(':products_description', $this->products_description, PDO::PARAM_STR);
+        $addProduct->bindValue(':products_prix', $this->products_prix, PDO::PARAM_STR);
         $addProduct->bindValue(':productCategory_id', $this->productCategory_id, PDO::PARAM_INT);
         // on utilise la méthode execute() via un return
         return $addProduct->execute();
@@ -46,8 +48,7 @@ class products extends database {
      */
     public function showProduct() {
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table Produits
-        $query = 'SELECT `products_id`, `products_name`, `products_image`,'
-                . '`products_description`, `productCategory_id`'
+        $query = 'SELECT *'
                 . 'FROM `octopus_products`'
                 . 'ORDER BY `productCategory_id`';
         // On crée un objet $result qui exécute la méthode query() avec comme paramètre $query
@@ -66,8 +67,10 @@ class products extends database {
     public function getProductByIdCat() {
         
         // On met notre requète dans la variable $query qui selectionne tous les champs de la table users l'id est egal à :id via marqueur nominatif sur id
-        $query = 'SELECT `products_id`, `products_name`, `products_image`, `products_description`, `productCategory_id`'
-                . 'FROM `octopus_products` WHERE `productCategory_id` = :productCategory_id '
+        $query = 'SELECT `products_id`, `products_name`, `products_image`,'
+                . ' `products_description`,`products_prix`, `productCategory_id`'
+                . 'FROM `octopus_products` '
+                . 'WHERE `productCategory_id` = :productCategory_id '
                 . 'ORDER BY `productCategory_id`';
         // On crée un objet $findProfil qui utilise la fonction prepare avec comme paramètre $query        
         $findProduct = $this->dataBase->prepare($query);
@@ -83,7 +86,8 @@ class products extends database {
         // Insertion des valeurs des variables via les marqueurs nominatifs, ex :name).
         $query = 'UPDATE `octopus_products` '
                 . 'SET `products_name`=:products_name, `products_image`=:products_image,'
-                . '`products_description`=:products_description, `productCategory_id`= :productCategory_id '
+                . '`products_description`=:products_description, `products_prix`=:products_prix,'
+                . '`productCategory_id`= :productCategory_id '
                 . 'WHERE `products_id`= :products_id';
         $updateProd = $this->dataBase->prepare($query);
         // on attribue les valeurs via bindValue et on recupère les attributs de la classe via $this
@@ -91,6 +95,7 @@ class products extends database {
         $updateProd->bindValue(':products_name', $this->products_name, PDO::PARAM_STR);
         $updateProd->bindValue(':products_image', $this->products_image, PDO::PARAM_STR);
         $updateProd->bindValue(':products_description', $this->products_description, PDO::PARAM_STR);
+        $updateProd->bindValue(':products_prix', $this->products_prix, PDO::PARAM_STR);
         $updateProd->bindValue(':productCategory_id', $this->productCategory_id, PDO::PARAM_STR);
         // on utilise la méthode execute() via un return
         return $updateProd->execute();
