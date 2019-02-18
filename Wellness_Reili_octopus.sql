@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 18 Février 2019 à 15:36
+-- Généré le :  Lun 18 Février 2019 à 15:40
 -- Version du serveur :  5.7.25-0ubuntu0.18.04.2
 -- Version de PHP :  7.2.15-0ubuntu0.18.04.1
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `Wellness_Reili_octopus`
 --
+CREATE DATABASE IF NOT EXISTS `Wellness_Reili_octopus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `Wellness_Reili_octopus`;
 
 -- --------------------------------------------------------
 
